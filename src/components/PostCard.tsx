@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, ChevronDown, ChevronUp, Calendar } from "lucide-react";
+import { ExternalLink, ChevronDown, ChevronUp, Calendar, User, Tag } from "lucide-react";
 import type { LinkedInPost } from "@/types/post";
 
 interface PostCardProps {
@@ -47,7 +47,10 @@ export function PostCard({ post, onSelect }: PostCardProps) {
         </div>
 
         {/* Row 2: Author */}
-        <p className="text-sm text-muted-foreground mb-4">{post.author}</p>
+        <p className="text-sm text-muted-foreground mb-4 flex items-center gap-1.5">
+          <User className="h-3.5 w-3.5 shrink-0" />
+          {post.author}
+        </p>
 
         {/* Row 3: Body */}
         <p className="text-sm text-foreground/80 whitespace-pre-line leading-relaxed mb-4">
@@ -72,7 +75,8 @@ export function PostCard({ post, onSelect }: PostCardProps) {
 
         {/* Row 4: Tags | URL */}
         <div className="flex items-center justify-between gap-3">
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-1.5 items-center">
+            <Tag className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
             {post.tags.map((tag) => (
               <Badge
                 key={tag}
