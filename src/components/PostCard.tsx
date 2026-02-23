@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { ExternalLink, ChevronDown, ChevronUp, User, Trash2 } from "lucide-react";
 import { useDeletePost } from "@/hooks/use-posts";
 import { useToast } from "@/hooks/use-toast";
@@ -28,19 +29,37 @@ function DeleteButton({ postId }: { postId: string }) {
   const deletePost = useDeletePost();
   const { toast } = useToast();
   return (
-    <button
-      className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-destructive transition-colors"
-      onClick={(e) => {
-        e.stopPropagation();
-        deletePost.mutate(postId, {
-          onSuccess: () => toast({ title: "Post deleted" }),
-          onError: () => toast({ title: "Error", description: "Failed to delete", variant: "destructive" }),
-        });
-      }}
-      disabled={deletePost.isPending}
-    >
-      <Trash2 className="h-3 w-3" />
-    </button>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <button
+          className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-destructive transition-colors"
+          onClick={(e) => e.stopPropagation()}
+          disabled={deletePost.isPending}
+        >
+          <Trash2 className="h-3 w-3" />
+        </button>
+      </AlertDialogTrigger>
+      <AlertDialogContent onClick={(e) => e.stopPropagation()}>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete this post?</AlertDialogTitle>
+          <AlertDialogDescription>This will archive the post in Notion. This action cannot be easily undone.</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            onClick={() => {
+              deletePost.mutate(postId, {
+                onSuccess: () => toast({ title: "Post deleted" }),
+                onError: () => toast({ title: "Error", description: "Failed to delete", variant: "destructive" }),
+              });
+            }}
+          >
+            Delete
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 
