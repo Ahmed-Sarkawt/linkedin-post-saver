@@ -28,3 +28,19 @@ export function useUpdatePostTags() {
     },
   });
 }
+
+export function useDeletePost() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (pageId: string) => {
+      const { data, error } = await supabase.functions.invoke("delete-linkedin-post", {
+        body: { pageId },
+      });
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["linkedin-posts"] });
+    },
+  });
+}

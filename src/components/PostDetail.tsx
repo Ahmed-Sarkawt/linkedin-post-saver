@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { ExternalLink, Calendar, User, X, Plus } from "lucide-react";
-import { useUpdatePostTags } from "@/hooks/use-posts";
+import { ExternalLink, Calendar, User, X, Plus, Trash2 } from "lucide-react";
+import { useUpdatePostTags, useDeletePost } from "@/hooks/use-posts";
 import { useToast } from "@/hooks/use-toast";
 import type { LinkedInPost } from "@/types/post";
 import { ALL_TAGS } from "@/types/post";
@@ -29,6 +29,7 @@ export function PostDetail({ post, onClose }: PostDetailProps) {
   const [tags, setTags] = useState(post?.tags || []);
   const [showTagPicker, setShowTagPicker] = useState(false);
   const updateTags = useUpdatePostTags();
+  const deletePost = useDeletePost();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -140,15 +141,34 @@ export function PostDetail({ post, onClose }: PostDetailProps) {
               </div>
             </div>
 
-            {post.linkedinUrl && (
+            <div className="flex gap-2">
+              {post.linkedinUrl && (
+                <Button
+                  className="flex-1"
+                  onClick={() => window.open(post.linkedinUrl!, "_blank")}
+                >
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  View on LinkedIn
+                </Button>
+              )}
               <Button
-                className="w-full"
-                onClick={() => window.open(post.linkedinUrl!, "_blank")}
+                variant="destructive"
+                className={post.linkedinUrl ? "" : "w-full"}
+                onClick={async () => {
+                  try {
+                    await deletePost.mutateAsync(post.id);
+                    toast({ title: "Post deleted" });
+                    onClose();
+                  } catch {
+                    toast({ title: "Error", description: "Failed to delete post", variant: "destructive" });
+                  }
+                }}
+                disabled={deletePost.isPending}
               >
-                <ExternalLink className="h-4 w-4 mr-2" />
-                View on LinkedIn
+                <Trash2 className="h-4 w-4 mr-2" />
+                {deletePost.isPending ? "Deleting…" : "Delete"}
               </Button>
-            )}
+            </div>
           </>
         )}
       </DialogContent>
