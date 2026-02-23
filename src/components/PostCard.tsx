@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink, ChevronDown, ChevronUp, User } from "lucide-react";
+import { ExternalLink, ChevronDown, ChevronUp, User, Trash2 } from "lucide-react";
+import { useDeletePost } from "@/hooks/use-posts";
+import { useToast } from "@/hooks/use-toast";
 import type { LinkedInPost } from "@/types/post";
 
 interface PostCardProps {
@@ -21,6 +23,26 @@ const TAG_COLORS: Record<string, string> = {
   Marketing: "bg-red-100 text-red-800 border-red-200",
   Other: "bg-gray-100 text-gray-800 border-gray-200",
 };
+
+function DeleteButton({ postId }: { postId: string }) {
+  const deletePost = useDeletePost();
+  const { toast } = useToast();
+  return (
+    <button
+      className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-destructive transition-colors"
+      onClick={(e) => {
+        e.stopPropagation();
+        deletePost.mutate(postId, {
+          onSuccess: () => toast({ title: "Post deleted" }),
+          onError: () => toast({ title: "Error", description: "Failed to delete", variant: "destructive" }),
+        });
+      }}
+      disabled={deletePost.isPending}
+    >
+      <Trash2 className="h-3 w-3" />
+    </button>
+  );
+}
 
 export function PostCard({ post, onSelect, variant = "list" }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
@@ -88,18 +110,21 @@ export function PostCard({ post, onSelect, variant = "list" }: PostCardProps) {
             ))}
           </div>
 
-          {post.linkedinUrl && (
-            <button
-              className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary transition-colors shrink-0"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(post.linkedinUrl!, "_blank");
-              }}
-            >
-              <ExternalLink className="h-3 w-3" />
-              View on LinkedIn
-            </button>
-          )}
+          <div className="flex items-center gap-2 shrink-0">
+            {post.linkedinUrl && (
+              <button
+                className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(post.linkedinUrl!, "_blank");
+                }}
+              >
+                <ExternalLink className="h-3 w-3" />
+                View on LinkedIn
+              </button>
+            )}
+            <DeleteButton postId={post.id} />
+          </div>
         </div>
       </CardContent>
     </Card>
