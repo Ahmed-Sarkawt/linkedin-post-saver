@@ -82,13 +82,13 @@ const sections = [
     ),
   },
   {
-    id: "duplicate",
+    id: "fork",
     icon: Copy,
-    title: "Duplicate as a Lovable Project",
+    title: "Fork the GitHub Repository",
     content: (
       <ol className="list-decimal list-inside space-y-1.5 pl-1">
-        <li className="text-xs text-muted-foreground leading-relaxed">Open the original project in Lovable.</li>
-        <li className="text-xs text-muted-foreground leading-relaxed">Go to Settings → click "Remix this project" to create your own copy.</li>
+        <li className="text-xs text-muted-foreground leading-relaxed">Fork or clone the repo from <a href="https://github.com/Ahmed-Sarkawt/linkedin-post-saver" target="_blank" rel="noopener noreferrer" className="text-primary underline">GitHub</a>.</li>
+        <li className="text-xs text-muted-foreground leading-relaxed">Import your forked repo into <a href="https://lovable.dev" target="_blank" rel="noopener noreferrer" className="text-primary underline">Lovable</a> to get a project with a backend ready to go.</li>
         <li className="text-xs text-muted-foreground leading-relaxed">In your new project, go to Settings → Secrets and add your NOTION_API_KEY and NOTION_DATABASE_ID.</li>
         <li className="text-xs text-muted-foreground leading-relaxed">Your project is now fully connected and ready to use!</li>
       </ol>

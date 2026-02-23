@@ -1,73 +1,63 @@
-# Welcome to your Lovable project
+# LinkedIn Post Saver
 
-## Project info
+Save, organize, and search your favorite LinkedIn posts in one clean dashboard.
 
-**URL**: https://lovable.dev/projects/a77f3d32-3637-4e2b-b4d0-612a2a726684
+LinkedIn's built-in "Save" feature is easy to forget about — posts get buried and lost. This tool fixes that with a Chrome extension that saves posts instantly and a dashboard to browse, search, and manage them.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## How It Works
 
-**Use Lovable**
+1. **Fork the repo** → get your own backend
+2. **Install the Chrome extension** → save posts with one click
+3. **Connect to Notion** → your posts sync to a Notion database
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a77f3d32-3637-4e2b-b4d0-612a2a726684) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## Step 1 — Fork the Repository
 
-**Use your preferred IDE**
+1. [Fork this repository](https://github.com/Ahmed-Sarkawt/linkedin-post-saver) to your own GitHub account.
+2. Go to [Lovable](https://lovable.dev) and import your forked repo to create a new project — this gives you a backend automatically.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Step 2 — Install the Chrome Extension
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. In your Lovable project, download the extension (the onboarding page has a download button).
+2. Unzip the downloaded file.
+3. Open Chrome and go to `chrome://extensions`.
+4. Enable **Developer mode** (top-right toggle).
+5. Click **Load unpacked** and select the unzipped folder.
+6. The extension icon will appear in your toolbar — you're ready!
 
-Follow these steps:
+## Step 3 — Connect to Notion
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. [Duplicate this Notion template](https://thewhitespacestudio.notion.site/Data-Template-310392a25611802aa1b5caf192432296?source=copy_link) to your Notion workspace.
+2. Go to [notion.so/my-integrations](https://www.notion.so/my-integrations) and create a new integration.
+3. Copy the **Internal Integration Secret** — this is your `NOTION_API_KEY`.
+4. Open your duplicated Notion database and share it with your integration (click **⋯** → **Connections** → your integration).
+5. Copy the **Database ID** from the database URL (the 32-character string after your workspace name) — this is your `NOTION_DATABASE_ID`.
+6. In your Lovable project, go to **Settings → Secrets** and add:
+   - `NOTION_API_KEY` — your integration secret
+   - `NOTION_DATABASE_ID` — your database ID
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+---
 
-# Step 3: Install the necessary dependencies.
-npm i
+## Usage
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+- **Save posts**: While browsing LinkedIn, click the extension icon on any post to save it.
+- **Dashboard**: Open your Lovable project to browse, search, and manage all your saved posts.
+- **Export**: Posts are stored in your Notion database, so you can use Notion's built-in tools to filter, sort, and share.
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Built With
 
-**Use GitHub Codespaces**
+- [Lovable](https://lovable.dev) — AI-powered full-stack development
+- React + TypeScript + Tailwind CSS
+- Notion API for data storage
+- Chrome Extension for saving posts
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## Credits
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/a77f3d32-3637-4e2b-b4d0-612a2a726684) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Built by [Ahmed Sulaiman](https://www.linkedin.com/in/itssulaiman/) with [Lovable](https://lovable.dev/invite/EELXUXJ).
