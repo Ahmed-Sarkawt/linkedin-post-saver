@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { HelpCircle, Download, Database, Copy } from "lucide-react";
 
-const EXTENSION_DOWNLOAD_URL = "https://github.com/YOUR_REPO/releases/latest"; // TODO: replace with actual URL
+const EXTENSION_DOWNLOAD_URL = `https://nmerrrljdqnmjkuod.supabase.co/storage/v1/object/public/extension/linkedin-post-saver-extension.zip`;
 
 const sections = [
   {
