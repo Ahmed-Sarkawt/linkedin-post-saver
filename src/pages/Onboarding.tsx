@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Copy, Download, Database, ArrowRight, Bookmark } from "lucide-react";
+import { GitFork, Download, Database, ArrowRight, Bookmark } from "lucide-react";
 
 const EXTENSION_DOWNLOAD_URL = `https://nmerrrljdqnmjvmjkuod.supabase.co/functions/v1/download-extension`;
 const NOTION_TEMPLATE_URL = "https://thewhitespacestudio.notion.site/Data-Template-310392a25611802aa1b5caf192432296?source=copy_link";
@@ -8,11 +8,14 @@ const NOTION_TEMPLATE_URL = "https://thewhitespacestudio.notion.site/Data-Templa
 const steps = [
   {
     number: 1,
-    icon: Copy,
-    title: "Duplicate the Lovable Project",
+    icon: GitFork,
+    title: "Fork the GitHub Repository",
     description:
-      "Remix this project in Lovable to get your own copy. Go to Settings → click \"Remix this project\" and you'll have your own version ready in seconds.",
-    action: null,
+      "Fork or clone the repository to your own GitHub account, then import it into Lovable to get your own project with a backend ready to go.",
+    action: {
+      label: "View on GitHub",
+      href: "https://github.com/Ahmed-Sarkawt/linkedin-post-saver",
+    },
   },
   {
     number: 2,
@@ -30,7 +33,7 @@ const steps = [
     icon: Database,
     title: "Connect to Notion",
     description:
-      "Duplicate our ready-made Notion template, create a Notion integration, and add your API key and Database ID to your project secrets. That's it!",
+      "Duplicate our Notion template, create an integration at notion.so/my-integrations, then add your NOTION_API_KEY and NOTION_DATABASE_ID as secrets in your Lovable project settings.",
     action: {
       label: "Get Notion Template",
       href: NOTION_TEMPLATE_URL,
