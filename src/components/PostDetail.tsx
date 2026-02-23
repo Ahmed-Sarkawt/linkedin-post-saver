@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -31,10 +31,12 @@ export function PostDetail({ post, onClose }: PostDetailProps) {
   const updateTags = useUpdatePostTags();
   const { toast } = useToast();
 
-  // Sync tags when post changes
-  if (post && tags !== post.tags && !updateTags.isPending) {
-    // Only reset if it's a different post
-  }
+  useEffect(() => {
+    if (post) {
+      setTags(post.tags);
+      setShowTagPicker(false);
+    }
+  }, [post]);
 
   const availableTags = ALL_TAGS.filter((t) => !tags.includes(t));
 
