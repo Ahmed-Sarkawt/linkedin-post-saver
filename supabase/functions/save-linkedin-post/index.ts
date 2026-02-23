@@ -96,7 +96,7 @@ Respond using the generate_metadata function.`
           "Title": { title: [{ text: { content: title } }] },
           "Author": { select: { name: author || "Unknown" } },
           "Post Body": { rich_text: [{ text: { content: body.slice(0, 2000) } }] },
-          "Post Date": { date: { start: date || new Date().toISOString().split("T")[0] } },
+          "Saved Date": { date: { start: date || new Date().toISOString().split("T")[0] } },
           "Tags": { multi_select: tags.map((t: string) => ({ name: t })) },
           "URL": { url: url || null },
         },

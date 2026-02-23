@@ -68,7 +68,7 @@ const sections = [
               <tr className="border-t border-border"><td className="px-3 py-1">Author</td><td className="px-3 py-1">Select</td></tr>
               <tr className="border-t border-border"><td className="px-3 py-1">Post Body</td><td className="px-3 py-1">Rich text</td></tr>
               <tr className="border-t border-border"><td className="px-3 py-1">Tags</td><td className="px-3 py-1">Multi-select</td></tr>
-              <tr className="border-t border-border"><td className="px-3 py-1">Post Date</td><td className="px-3 py-1">Date</td></tr>
+              <tr className="border-t border-border"><td className="px-3 py-1">Saved Date</td><td className="px-3 py-1">Date</td></tr>
               <tr className="border-t border-border"><td className="px-3 py-1">URL</td><td className="px-3 py-1">URL</td></tr>
             </tbody>
           </table>

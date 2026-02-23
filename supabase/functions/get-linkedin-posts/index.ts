@@ -21,7 +21,7 @@ serve(async (req) => {
 
     while (hasMore) {
       const body: any = {
-        sorts: [{ property: "Post Date", direction: "descending" }],
+        sorts: [{ property: "Saved Date", direction: "descending" }],
         page_size: 100,
       };
       if (startCursor) body.start_cursor = startCursor;
@@ -55,7 +55,7 @@ serve(async (req) => {
         title: props["Title"]?.title?.[0]?.plain_text || "Untitled",
         author: props["Author"]?.select?.name || "Unknown",
         body: props["Post Body"]?.rich_text?.[0]?.plain_text || "",
-        date: props["Post Date"]?.date?.start || null,
+        date: props["Saved Date"]?.date?.start || null,
         tags: props["Tags"]?.multi_select?.map((t: any) => t.name) || [],
         linkedinUrl: props["URL"]?.url || props["LinkedIn Link"]?.url || null,
         createdAt: page.created_time,
