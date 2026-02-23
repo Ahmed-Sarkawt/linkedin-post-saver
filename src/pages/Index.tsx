@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Search, Download, Loader2, Bookmark, CalendarIcon, User, X } from "lucide-react";
+import { Search, Download, Loader2, Bookmark, CalendarIcon, User, X, LayoutList, LayoutGrid } from "lucide-react";
 import { usePosts } from "@/hooks/use-posts";
 import { PostCard } from "@/components/PostCard";
 import { SetupGuide } from "@/components/SetupGuide";
@@ -20,6 +20,7 @@ const Index = () => {
   const [selectedAuthor, setSelectedAuthor] = useState<string>("");
   const [dateRange, setDateRange] = useState<string>("");
   const [visibleCount, setVisibleCount] = useState(10);
+  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
 
   const authors = useMemo(() => {
     if (!posts) return [];
@@ -202,9 +203,33 @@ const Index = () => {
           </div>
         )}
 
-        <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs text-muted-foreground">{filteredPosts.length} post{filteredPosts.length !== 1 ? "s" : ""}</span>
+          <div className="flex gap-0.5">
+            <Button
+              variant={viewMode === "list" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-7 w-7 p-0"
+              onClick={() => setViewMode("list")}
+              title="List view"
+            >
+              <LayoutList className="h-3.5 w-3.5" />
+            </Button>
+            <Button
+              variant={viewMode === "grid" ? "secondary" : "ghost"}
+              size="sm"
+              className="h-7 w-7 p-0"
+              onClick={() => setViewMode("grid")}
+              title="Grid view"
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        </div>
+
+        <div className={viewMode === "grid" ? "grid grid-cols-2 gap-3" : "flex flex-col gap-3"}>
           {filteredPosts.slice(0, visibleCount).map((post) => (
-            <PostCard key={post.id} post={post} onSelect={setSelectedPost} />
+            <PostCard key={post.id} post={post} onSelect={setSelectedPost} variant={viewMode} />
           ))}
         </div>
         {visibleCount < filteredPosts.length && (
