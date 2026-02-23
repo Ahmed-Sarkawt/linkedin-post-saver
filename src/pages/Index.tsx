@@ -160,6 +160,19 @@ const Index = () => {
           ))}
         </div>
       </main>
+
+      <footer className="max-w-3xl mx-auto px-4 py-6 text-center text-xs text-muted-foreground">
+        Built by Ahmed Sulaiman with{" "}
+        <a
+          href="https://lovable.dev?ref=ahmed-sulaiman"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary hover:underline"
+        >
+          Lovable
+        </a>{" "}
+        for fun
+      </footer>
     </div>
   );
 };
