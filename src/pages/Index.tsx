@@ -99,6 +99,8 @@ const Index = () => {
 
   const handleReset = () => {
     localStorage.removeItem("onboarding_complete");
+    localStorage.removeItem("notion_api_key");
+    localStorage.removeItem("notion_database_id");
     window.location.href = "/";
   };
 

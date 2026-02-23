@@ -9,10 +9,11 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   try {
-    const NOTION_API_KEY = Deno.env.get("NOTION_API_KEY");
+    const body = await req.json().catch(() => ({}));
+    const NOTION_API_KEY = body.notionApiKey || Deno.env.get("NOTION_API_KEY");
     if (!NOTION_API_KEY) throw new Error("NOTION_API_KEY not configured");
 
-    const NOTION_DATABASE_ID = Deno.env.get("NOTION_DATABASE_ID");
+    const NOTION_DATABASE_ID = body.notionDatabaseId || Deno.env.get("NOTION_DATABASE_ID");
     if (!NOTION_DATABASE_ID) throw new Error("NOTION_DATABASE_ID not configured");
 
     let allResults: any[] = [];
@@ -20,11 +21,11 @@ serve(async (req) => {
     let startCursor: string | undefined = undefined;
 
     while (hasMore) {
-      const body: any = {
+      const queryBody: any = {
         sorts: [{ property: "Saved Date", direction: "descending" }],
         page_size: 100,
       };
-      if (startCursor) body.start_cursor = startCursor;
+      if (startCursor) queryBody.start_cursor = startCursor;
 
       const response = await fetch(`https://api.notion.com/v1/databases/${NOTION_DATABASE_ID}/query`, {
         method: "POST",
@@ -33,7 +34,7 @@ serve(async (req) => {
           "Content-Type": "application/json",
           "Notion-Version": "2022-06-28",
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(queryBody),
       });
 
       if (!response.ok) {

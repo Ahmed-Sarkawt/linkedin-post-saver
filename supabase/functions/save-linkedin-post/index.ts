@@ -9,16 +9,16 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   try {
-    const { author, body, date, url } = await req.json();
+    const { author, body, date, url, notionApiKey, notionDatabaseId } = await req.json();
     if (!body) throw new Error("Post body is required");
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
-    const NOTION_API_KEY = Deno.env.get("NOTION_API_KEY");
+    const NOTION_API_KEY = notionApiKey || Deno.env.get("NOTION_API_KEY");
     if (!NOTION_API_KEY) throw new Error("NOTION_API_KEY not configured");
 
-    const NOTION_DATABASE_ID = Deno.env.get("NOTION_DATABASE_ID");
+    const NOTION_DATABASE_ID = notionDatabaseId || Deno.env.get("NOTION_DATABASE_ID");
     if (!NOTION_DATABASE_ID) throw new Error("NOTION_DATABASE_ID not configured");
 
     // Generate title and tags with AI
