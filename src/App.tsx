@@ -11,13 +11,15 @@ const queryClient = new QueryClient();
 
 function RequireSetup({ children }: { children: React.ReactNode }) {
   const done = localStorage.getItem("onboarding_complete") === "true";
-  if (!done) return <Navigate to="/" replace />;
+  const hasKeys = !!localStorage.getItem("notion_api_key") && !!localStorage.getItem("notion_database_id");
+  if (!done || !hasKeys) return <Navigate to="/" replace />;
   return <>{children}</>;
 }
 
 function RedirectIfSetup({ children }: { children: React.ReactNode }) {
   const done = localStorage.getItem("onboarding_complete") === "true";
-  if (done) return <Navigate to="/dashboard" replace />;
+  const hasKeys = !!localStorage.getItem("notion_api_key") && !!localStorage.getItem("notion_database_id");
+  if (done && hasKeys) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 }
 

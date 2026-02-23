@@ -9,10 +9,10 @@ serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   try {
-    const { pageId, tags } = await req.json();
+    const { pageId, tags, notionApiKey, notionDatabaseId } = await req.json();
     if (!pageId) throw new Error("pageId is required");
 
-    const NOTION_API_KEY = Deno.env.get("NOTION_API_KEY");
+    const NOTION_API_KEY = notionApiKey || Deno.env.get("NOTION_API_KEY");
     if (!NOTION_API_KEY) throw new Error("NOTION_API_KEY not configured");
 
     const properties: any = {};

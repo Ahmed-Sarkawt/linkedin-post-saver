@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GitFork, Download, Database, ArrowRight, Bookmark } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { GitFork, Download, Database, ArrowRight, Bookmark, Key, Hash, ExternalLink } from "lucide-react";
 
 const EXTENSION_DOWNLOAD_URL = `https://nmerrrljdqnmjvmjkuod.supabase.co/functions/v1/download-extension`;
 const NOTION_TEMPLATE_URL = "https://thewhitespacestudio.notion.site/Data-Template-310392a25611802aa1b5caf192432296?source=copy_link";
@@ -8,17 +11,6 @@ const NOTION_TEMPLATE_URL = "https://thewhitespacestudio.notion.site/Data-Templa
 const steps = [
   {
     number: 1,
-    icon: GitFork,
-    title: "Fork the GitHub Repository",
-    description:
-      "Fork the repo, import it into Lovable, and you're good to go.",
-    action: {
-      label: "View on GitHub",
-      href: "https://github.com/Ahmed-Sarkawt/linkedin-post-saver",
-    },
-  },
-  {
-    number: 2,
     icon: Download,
     title: "Install the Chrome Extension",
     description:
@@ -29,11 +21,11 @@ const steps = [
     },
   },
   {
-    number: 3,
+    number: 2,
     icon: Database,
-    title: "Connect to Notion",
+    title: "Set Up Your Notion Database",
     description:
-      "Duplicate our template, create an integration, and add two secrets to your project.",
+      "Duplicate our template and create a Notion integration to get your API key and Database ID.",
     action: {
       label: "Get Notion Template",
       href: NOTION_TEMPLATE_URL,
@@ -42,7 +34,31 @@ const steps = [
 ];
 
 export default function Onboarding() {
+  const [notionApiKey, setNotionApiKey] = useState("");
+  const [notionDatabaseId, setNotionDatabaseId] = useState("");
+  const [error, setError] = useState("");
+
   const handleGetStarted = () => {
+    const trimmedKey = notionApiKey.trim();
+    const trimmedDbId = notionDatabaseId.trim();
+
+    if (!trimmedKey || !trimmedDbId) {
+      setError("Please enter both your Notion API Key and Database ID.");
+      return;
+    }
+
+    if (!trimmedKey.startsWith("ntn_") && !trimmedKey.startsWith("secret_")) {
+      setError("Notion API Key should start with 'ntn_' or 'secret_'.");
+      return;
+    }
+
+    if (trimmedDbId.length < 20) {
+      setError("Database ID looks too short. It's usually a 32-character string.");
+      return;
+    }
+
+    localStorage.setItem("notion_api_key", trimmedKey);
+    localStorage.setItem("notion_database_id", trimmedDbId);
     localStorage.setItem("onboarding_complete", "true");
     window.location.href = "/dashboard";
   };
@@ -70,11 +86,11 @@ export default function Onboarding() {
       </section>
 
       {/* Setup Cards */}
-      <section className="max-w-4xl mx-auto px-4 pb-16 w-full">
+      <section className="max-w-4xl mx-auto px-4 pb-8 w-full">
         <h2 className="text-center text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-8">
           Get started in 3 simple steps
         </h2>
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 max-w-2xl mx-auto">
           {steps.map((step) => (
             <Card key={step.number} className="border-border bg-card relative overflow-hidden">
               <CardContent className="p-6 flex flex-col h-full">
@@ -94,7 +110,7 @@ export default function Onboarding() {
                     className="mt-4"
                   >
                     <Button variant="outline" size="sm" className="gap-2 w-full">
-                      <step.icon className="h-4 w-4" />
+                      <ExternalLink className="h-4 w-4" />
                       {step.action.label}
                     </Button>
                   </a>
@@ -103,14 +119,92 @@ export default function Onboarding() {
             </Card>
           ))}
         </div>
+      </section>
 
-        {/* CTA */}
-        <div className="flex justify-center mt-10">
-          <Button size="lg" className="gap-2 text-base px-8" onClick={handleGetStarted}>
-            I've set everything up — take me to my dashboard
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-        </div>
+      {/* Notion Keys Form */}
+      <section className="max-w-4xl mx-auto px-4 pb-16 w-full">
+        <Card className="border-border bg-card max-w-2xl mx-auto">
+          <CardContent className="p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center justify-center h-9 w-9 rounded-full bg-primary text-primary-foreground text-sm font-bold shrink-0">
+                3
+              </div>
+              <Key className="h-5 w-5 text-primary" />
+            </div>
+            <h3 className="text-base font-semibold text-foreground mb-2">Connect Your Notion</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+              Enter your Notion integration credentials below. They're stored locally in your browser — never sent to any server except Notion's API.
+            </p>
+
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="notion-api-key" className="text-sm font-medium text-foreground flex items-center gap-1.5">
+                  <Key className="h-3.5 w-3.5" />
+                  Notion API Key
+                </Label>
+                <Input
+                  id="notion-api-key"
+                  type="password"
+                  placeholder="ntn_xxxxxxxxxxxxx"
+                  value={notionApiKey}
+                  onChange={(e) => { setNotionApiKey(e.target.value); setError(""); }}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Find this at{" "}
+                  <a href="https://www.notion.so/my-integrations" target="_blank" rel="noopener noreferrer" className="text-primary underline">
+                    notion.so/my-integrations
+                  </a>
+                  {" "}→ Your integration → Secrets.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="notion-db-id" className="text-sm font-medium text-foreground flex items-center gap-1.5">
+                  <Hash className="h-3.5 w-3.5" />
+                  Notion Database ID
+                </Label>
+                <Input
+                  id="notion-db-id"
+                  type="text"
+                  placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                  value={notionDatabaseId}
+                  onChange={(e) => { setNotionDatabaseId(e.target.value); setError(""); }}
+                />
+                <p className="text-xs text-muted-foreground">
+                  The 32-character ID from your database URL (after the workspace name, before the <code className="bg-muted px-1 rounded">?</code>).
+                </p>
+              </div>
+
+              {error && (
+                <p className="text-sm text-destructive font-medium">{error}</p>
+              )}
+            </div>
+
+            {/* CTA */}
+            <div className="mt-6">
+              <Button size="lg" className="gap-2 text-base w-full" onClick={handleGetStarted}>
+                Connect & go to my dashboard
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Fork CTA */}
+      <section className="max-w-4xl mx-auto px-4 pb-10 text-center">
+        <p className="text-sm text-muted-foreground">
+          Want to self-host?{" "}
+          <a
+            href="https://github.com/Ahmed-Sarkawt/linkedin-post-saver"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary underline"
+          >
+            Fork the GitHub repo
+          </a>{" "}
+          and deploy your own instance.
+        </p>
       </section>
 
       {/* Footer */}
