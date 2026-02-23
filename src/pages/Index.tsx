@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Search, Download, Loader2, Bookmark, CalendarIcon, User, X, LayoutList, LayoutGrid } from "lucide-react";
+import { Search, Download, Loader2, Bookmark, CalendarIcon, User, X, LayoutList, LayoutGrid, Settings } from "lucide-react";
 import { usePosts } from "@/hooks/use-posts";
 import { PostCard } from "@/components/PostCard";
 import { SetupGuide } from "@/components/SetupGuide";
@@ -97,6 +97,11 @@ const Index = () => {
     URL.revokeObjectURL(url);
   };
 
+  const handleReset = () => {
+    localStorage.removeItem("onboarding_complete");
+    window.location.href = "/";
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 bg-card border-b border-border shadow-sm">
@@ -115,11 +120,21 @@ const Index = () => {
               <Download className="h-4 w-4" />
               <span className="hidden sm:inline ml-1 text-xs">CSV</span>
             </Button>
+            <Button variant="ghost" size="sm" onClick={handleReset} title="Reset Notion connection">
+              <Settings className="h-4 w-4" />
+              <span className="hidden sm:inline ml-1 text-xs">Settings</span>
+            </Button>
           </div>
         </div>
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-4">
+        <h2 className="text-xl font-semibold text-foreground mb-1">
+          Access all of your saved LinkedIn posts without a hassle
+        </h2>
+        <p className="text-sm text-muted-foreground mb-5">
+          Search, filter, and export your bookmarked posts from one place.
+        </p>
         <div className="relative mb-4">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
