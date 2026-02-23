@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.update-linkedin-post]
 verify_jwt = false
+
+[functions.download-extension]
+verify_jwt = false
