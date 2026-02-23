@@ -163,7 +163,7 @@ export function PostDetail({ post, onClose }: PostDetailProps) {
                     {deletePost.isPending ? "Deleting…" : "Delete"}
                   </Button>
                 </AlertDialogTrigger>
-                <AlertDialogContent>
+                <AlertDialogContent className="z-[60]">
                   <AlertDialogHeader>
                     <AlertDialogTitle>Delete this post?</AlertDialogTitle>
                     <AlertDialogDescription>This will archive the post in Notion. This action cannot be easily undone.</AlertDialogDescription>
