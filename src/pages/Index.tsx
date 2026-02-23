@@ -6,6 +6,7 @@ import { Search, Download, Loader2, Bookmark } from "lucide-react";
 import { usePosts } from "@/hooks/use-posts";
 import { PostCard } from "@/components/PostCard";
 import { SetupGuide } from "@/components/SetupGuide";
+import { HelpDialog } from "@/components/HelpDialog";
 import { PostDetail } from "@/components/PostDetail";
 import { ALL_TAGS, type LinkedInPost } from "@/types/post";
 
@@ -95,6 +96,7 @@ const Index = () => {
             <h1 className="font-semibold text-foreground text-lg">Saved Posts</h1>
           </div>
           <div className="flex gap-1">
+            <HelpDialog />
             <Button variant="ghost" size="sm" onClick={() => exportPosts("json")} title="Export JSON">
               <Download className="h-4 w-4" />
               <span className="hidden sm:inline ml-1 text-xs">JSON</span>
