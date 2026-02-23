@@ -1,45 +1,38 @@
 
-# Update Onboarding + README for Public GitHub-Based Distribution
 
-## Changes Overview
+# Keep Two Separate Projects (No Code Changes Needed)
 
-Two main updates: (1) change Step 1 from "Remix in Lovable" to "Fork/clone the GitHub repo", and (2) rewrite the README as a product guide.
+## The Problem
+Your published app and the GitHub repo share the same codebase. Anyone visiting your public URL can access your personal Notion data and burn your AI credits.
 
----
+## The Solution
 
-## 1. Onboarding Page (`src/pages/Onboarding.tsx`)
+**No code changes are required.** The architecture already supports the "fork and use" model correctly:
 
-**Step 1 update:**
-- Title: "Fork the GitHub Repository"
-- Description: "Fork or clone the repository to your own GitHub account, then import it into Lovable to get your own project with a backend ready to go."
-- Add action button: "View on GitHub" linking to `https://github.com/Ahmed-Sarkawt/linkedin-post-saver`
-- Change icon from `Copy` to `GitFork` (from lucide-react)
+1. **Your personal project** -- Keep using it as-is. Unpublish it (remove the public URL) or keep it private. Your Notion keys stay safe as project secrets.
 
-**Step 3 update (minor):**
-- Simplify the Notion description to clarify they just duplicate the template (no need to create columns manually), create an integration, and add secrets.
+2. **The GitHub repo** -- Already works as a template. When someone forks it and imports into Lovable, they get:
+   - Their own backend (separate from yours)
+   - Their own secrets storage (they add their own Notion keys)
+   - Their own AI credits
+   - Zero access to your data
 
-## 2. Help Dialog (`src/components/HelpDialog.tsx`)
+## What You Should Do
 
-- Update the "Duplicate as a Lovable Project" section to match the new GitHub-based flow (fork repo, import into Lovable, add secrets).
+1. **Unpublish your personal app** -- Go to the Publish dialog and remove the public URL so nobody can access your personal instance
+2. **Keep using your personal project normally** -- It still works via the preview URL, which only you can access
+3. **The GitHub repo stays as the public entry point** -- The onboarding already guides users to fork, install the extension, and connect Notion
 
-## 3. README (`README.md`)
+## Why Not localStorage for API Keys
 
-Complete rewrite as a product README:
+Storing Notion keys in localStorage and passing them to edge functions would mean:
+- Every user's requests go through YOUR backend, burning YOUR AI credits (the save-post function calls Lovable AI for title/tag generation)
+- Your project becomes a shared proxy with no usage control
+- Notion API keys stored in the browser are less secure
 
-- **Hero section**: "LinkedIn Post Saver" -- Save, organize, and search your favorite LinkedIn posts in one clean dashboard.
-- **How It Works**: Brief explanation of the 3-step setup
-- **Step 1 - Fork the repo**: Instructions to fork from GitHub and import into Lovable
-- **Step 2 - Install the Chrome Extension**: Download, unzip, load unpacked in Chrome
-- **Step 3 - Connect to Notion**: Link to the template, instructions for creating a Notion integration, where to find API key and Database ID, how to add them as project secrets in Lovable
-- **Usage**: How the extension saves posts and how the dashboard works
-- **Built with**: Tech stack list
-- **Credits**: Link to your LinkedIn and Lovable
+With the fork model, each user pays for their own usage and owns their own infrastructure. No shared resources, no cost surprises.
 
----
+## Summary
 
-## Technical Details
+No files to modify. The codebase is already designed correctly for the fork-and-use model. The only action item is to unpublish your personal app's public URL to prevent unauthorized access.
 
-### Files modified:
-- `src/pages/Onboarding.tsx` -- Update step 1 title/description/icon/action, minor step 3 copy tweak
-- `src/components/HelpDialog.tsx` -- Update the "duplicate" section to reference GitHub fork flow
-- `README.md` -- Full rewrite as product documentation
