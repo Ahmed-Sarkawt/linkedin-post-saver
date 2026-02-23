@@ -11,7 +11,7 @@ const steps = [
     icon: GitFork,
     title: "Fork the GitHub Repository",
     description:
-      "Fork or clone the repository to your own GitHub account, then import it into Lovable to get your own project with a backend ready to go.",
+      "Fork the repo, import it into Lovable, and you're good to go.",
     action: {
       label: "View on GitHub",
       href: "https://github.com/Ahmed-Sarkawt/linkedin-post-saver",
@@ -22,7 +22,7 @@ const steps = [
     icon: Download,
     title: "Install the Chrome Extension",
     description:
-      "Download and install the extension in Chrome. It takes less than a minute — just enable Developer Mode and load it.",
+      "Download, unzip, and load it into Chrome. Takes under a minute.",
     action: {
       label: "Download Extension",
       href: EXTENSION_DOWNLOAD_URL,
@@ -33,7 +33,7 @@ const steps = [
     icon: Database,
     title: "Connect to Notion",
     description:
-      "Duplicate our Notion template, create an integration at notion.so/my-integrations, then add your NOTION_API_KEY and NOTION_DATABASE_ID as secrets in your Lovable project settings.",
+      "Duplicate our template, create an integration, and add two secrets to your project.",
     action: {
       label: "Get Notion Template",
       href: NOTION_TEMPLATE_URL,
