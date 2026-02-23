@@ -49,14 +49,36 @@ const sections = [
     icon: Database,
     title: "Connect to Notion",
     content: (
-      <ol className="list-decimal list-inside space-y-1.5 pl-1">
-        <li className="text-xs text-muted-foreground leading-relaxed">Go to <a href="https://www.notion.so/my-integrations" target="_blank" rel="noopener noreferrer" className="text-primary underline">notion.so/my-integrations</a> and create a new integration.</li>
-        <li className="text-xs text-muted-foreground leading-relaxed">Copy the Internal Integration Secret (API key).</li>
-        <li className="text-xs text-muted-foreground leading-relaxed">Create a Notion database with columns: Title (title), Author (rich_text), Body (rich_text), Tags (multi_select), Date (date), LinkedIn URL (url).</li>
-        <li className="text-xs text-muted-foreground leading-relaxed">Share the database with your integration (click ⋯ → Connections → Connect).</li>
-        <li className="text-xs text-muted-foreground leading-relaxed">Copy the Database ID from the URL (the 32-character string after the workspace name).</li>
-        <li className="text-xs text-muted-foreground leading-relaxed">Add both the API key and Database ID as secrets in your Lovable project settings.</li>
-      </ol>
+      <div className="space-y-3">
+        <ol className="list-decimal list-inside space-y-1.5 pl-1">
+          <li className="text-xs text-muted-foreground leading-relaxed">Go to <a href="https://www.notion.so/my-integrations" target="_blank" rel="noopener noreferrer" className="text-primary underline">notion.so/my-integrations</a> and create a new integration.</li>
+          <li className="text-xs text-muted-foreground leading-relaxed">Copy the Internal Integration Secret (API key).</li>
+          <li className="text-xs text-muted-foreground leading-relaxed">Create a Notion database with these columns:</li>
+        </ol>
+        <div className="border border-border rounded-md overflow-hidden ml-5">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="bg-muted">
+                <th className="text-left px-3 py-1.5 font-semibold text-foreground">Column</th>
+                <th className="text-left px-3 py-1.5 font-semibold text-foreground">Type</th>
+              </tr>
+            </thead>
+            <tbody className="text-muted-foreground">
+              <tr className="border-t border-border"><td className="px-3 py-1">Title</td><td className="px-3 py-1">Title</td></tr>
+              <tr className="border-t border-border"><td className="px-3 py-1">Author</td><td className="px-3 py-1">Select</td></tr>
+              <tr className="border-t border-border"><td className="px-3 py-1">Post Body</td><td className="px-3 py-1">Rich text</td></tr>
+              <tr className="border-t border-border"><td className="px-3 py-1">Tags</td><td className="px-3 py-1">Multi-select</td></tr>
+              <tr className="border-t border-border"><td className="px-3 py-1">Post Date</td><td className="px-3 py-1">Date</td></tr>
+              <tr className="border-t border-border"><td className="px-3 py-1">URL</td><td className="px-3 py-1">URL</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ol className="list-decimal list-inside space-y-1.5 pl-1" start={4}>
+          <li className="text-xs text-muted-foreground leading-relaxed">Share the database with your integration (click ⋯ → Connections → Connect).</li>
+          <li className="text-xs text-muted-foreground leading-relaxed">Copy the Database ID from the URL (the 32-character string after the workspace name).</li>
+          <li className="text-xs text-muted-foreground leading-relaxed">Add both the API key and Database ID as secrets in your Lovable project settings.</li>
+        </ol>
+      </div>
     ),
   },
   {
