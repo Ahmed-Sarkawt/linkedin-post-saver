@@ -2,22 +2,23 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 12px;
+  padding: 12px 8px;
   border: none;
-  border-radius: 16px;
-  background: #0a66c2;
-  color: #fff;
+  border-radius: 4px;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.6);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, opacity 0.15s;
-  line-height: 1;
-  height: 28px;
+  transition: background 0.15s;
+  line-height: 1.33;
+  height: auto;
 }
 
 .lps-save-btn:hover {
-  background: #004182;
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.9);
 }
 
 .lps-save-btn.lps-saving {
@@ -26,23 +27,22 @@
 }
 
 .lps-save-btn.lps-saved {
-  background: #057642;
+  color: #057642;
   cursor: default;
 }
 
 .lps-save-btn.lps-error {
-  background: #cc1016;
+  color: #cc1016;
   cursor: pointer;
 }
 
 .lps-save-btn.lps-disabled {
-  background: #aaa;
+  color: rgba(0, 0, 0, 0.3);
   cursor: not-allowed;
-  opacity: 0.5;
 }
 
 .lps-save-btn svg {
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   fill: currentColor;
 }
