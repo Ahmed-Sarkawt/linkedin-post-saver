@@ -84,17 +84,20 @@ export function PostCard({ post, onSelect }: PostCardProps) {
           </div>
 
           {post.linkedinUrl && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-primary h-8 px-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(post.linkedinUrl!, "_blank");
-              }}
-            >
-              <ExternalLink className="h-4 w-4" />
-            </Button>
+            <div className="flex items-center gap-1.5 min-w-0">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-primary h-8 px-2 gap-1.5 min-w-0"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(post.linkedinUrl!, "_blank");
+                }}
+              >
+                <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                <span className="text-xs truncate max-w-[180px]">{post.linkedinUrl.replace(/^https?:\/\/(www\.)?/, '')}</span>
+              </Button>
+            </div>
           )}
         </div>
       </CardContent>

@@ -57,7 +57,7 @@ serve(async (req) => {
         body: props["Post Body"]?.rich_text?.[0]?.plain_text || "",
         date: props["Post Date"]?.date?.start || null,
         tags: props["Tags"]?.multi_select?.map((t: any) => t.name) || [],
-        linkedinUrl: props["LinkedIn Link"]?.url || null,
+        linkedinUrl: props["URL"]?.url || props["LinkedIn Link"]?.url || null,
         createdAt: page.created_time,
       };
     });

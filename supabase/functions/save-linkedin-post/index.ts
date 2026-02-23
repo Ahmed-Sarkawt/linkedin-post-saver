@@ -98,7 +98,7 @@ Respond using the generate_metadata function.`
           "Post Body": { rich_text: [{ text: { content: body.slice(0, 2000) } }] },
           "Post Date": { date: { start: date || new Date().toISOString().split("T")[0] } },
           "Tags": { multi_select: tags.map((t: string) => ({ name: t })) },
-          "LinkedIn Link": { url: url || null },
+          "URL": { url: url || null },
         },
       }),
     });
