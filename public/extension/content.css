@@ -27,8 +27,12 @@
 }
 
 .lps-save-btn.lps-saved {
-  color: #057642;
+  color: #0a66c2;
   cursor: default;
+}
+
+.lps-save-btn.lps-saved svg {
+  fill: #0a66c2;
 }
 
 .lps-save-btn.lps-error {

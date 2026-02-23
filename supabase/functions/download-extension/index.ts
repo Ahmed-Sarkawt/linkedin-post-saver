@@ -122,7 +122,7 @@ function generateContentJs(edgeFunctionUrl: string, anonKey: string): string {
           body: JSON.stringify(payload)
         });
         if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.error || "HTTP " + res.status); }
-        btn.classList.remove("lps-saving"); btn.classList.add("lps-saved"); btn.innerHTML = CHECK_SVG + " Saved";
+        btn.classList.remove("lps-saving"); btn.classList.add("lps-saved"); btn.innerHTML = BOOKMARK_SVG + " Saved";
       } catch (err) {
         console.error("[LinkedIn Post Saver]", err);
         btn.classList.remove("lps-saving"); btn.classList.add("lps-error"); btn.innerHTML = BOOKMARK_SVG + " Error"; btn.title = err.message;
@@ -138,6 +138,7 @@ function generateContentJs(edgeFunctionUrl: string, anonKey: string): string {
       processedPosts.add(postEl);
       const bar = postEl.querySelector(".feed-shared-social-action-bar, .social-details-social-actions, .feed-shared-social-actions");
       if (!bar) return;
+      if (bar.querySelector(".lps-save-btn")) return;
       bar.appendChild(createSaveButton(postEl));
     });
   }
@@ -148,7 +149,7 @@ function generateContentJs(edgeFunctionUrl: string, anonKey: string): string {
 }
 
 function generateContentCss(): string {
-  return `.lps-save-btn{display:inline-flex;align-items:center;gap:4px;padding:12px 8px;border:none;border-radius:4px;background:transparent;color:rgba(0,0,0,.6);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s;line-height:1.33;height:auto}.lps-save-btn:hover{background:rgba(0,0,0,.08);color:rgba(0,0,0,.9)}.lps-save-btn.lps-saving{opacity:.6;cursor:wait}.lps-save-btn.lps-saved{color:#057642;cursor:default}.lps-save-btn.lps-error{color:#cc1016;cursor:pointer}.lps-save-btn.lps-disabled{color:rgba(0,0,0,.3);cursor:not-allowed}.lps-save-btn svg{width:20px;height:20px;fill:currentColor}`;
+  return `.lps-save-btn{display:inline-flex;align-items:center;gap:4px;padding:12px 8px;border:none;border-radius:4px;background:transparent;color:rgba(0,0,0,.6);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s;line-height:1.33;height:auto}.lps-save-btn:hover{background:rgba(0,0,0,.08);color:rgba(0,0,0,.9)}.lps-save-btn.lps-saving{opacity:.6;cursor:wait}.lps-save-btn.lps-saved{color:#0a66c2;cursor:default}.lps-save-btn.lps-saved svg{fill:#0a66c2}.lps-save-btn.lps-error{color:#cc1016;cursor:pointer}.lps-save-btn.lps-disabled{color:rgba(0,0,0,.3);cursor:not-allowed}.lps-save-btn svg{width:20px;height:20px;fill:currentColor}`;
 }
 
 // Minimal ZIP file creator (no compression, store only)

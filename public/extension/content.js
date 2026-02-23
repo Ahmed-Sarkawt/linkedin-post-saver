@@ -121,7 +121,7 @@
 
         btn.classList.remove("lps-saving");
         btn.classList.add("lps-saved");
-        btn.innerHTML = `${CHECK_SVG} Saved`;
+        btn.innerHTML = `${BOOKMARK_SVG} Saved`;
       } catch (err) {
         console.error("[LinkedIn Post Saver]", err);
         btn.classList.remove("lps-saving");
@@ -155,6 +155,9 @@
         ".feed-shared-social-actions"
       );
       if (!actionsBar) return;
+
+      // Skip if button already exists in this bar
+      if (actionsBar.querySelector(".lps-save-btn")) return;
 
       const btn = createSaveButton(postEl);
       actionsBar.appendChild(btn);
