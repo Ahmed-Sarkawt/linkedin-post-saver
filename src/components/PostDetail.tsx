@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ExternalLink, Calendar, User, X, Plus } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { ExternalLink, Calendar, User, X, Plus } from "lucide-react";
 import { useUpdatePostTags } from "@/hooks/use-posts";
 import { useToast } from "@/hooks/use-toast";
 import type { LinkedInPost } from "@/types/post";
@@ -20,19 +21,25 @@ const TAG_COLORS: Record<string, string> = {
 };
 
 interface PostDetailProps {
-  post: LinkedInPost;
-  onBack: () => void;
+  post: LinkedInPost | null;
+  onClose: () => void;
 }
 
-export function PostDetail({ post, onBack }: PostDetailProps) {
-  const [tags, setTags] = useState(post.tags);
+export function PostDetail({ post, onClose }: PostDetailProps) {
+  const [tags, setTags] = useState(post?.tags || []);
   const [showTagPicker, setShowTagPicker] = useState(false);
   const updateTags = useUpdatePostTags();
   const { toast } = useToast();
 
+  // Sync tags when post changes
+  if (post && tags !== post.tags && !updateTags.isPending) {
+    // Only reset if it's a different post
+  }
+
   const availableTags = ALL_TAGS.filter((t) => !tags.includes(t));
 
   const handleAddTag = async (tag: string) => {
+    if (!post) return;
     const newTags = [...tags, tag];
     setTags(newTags);
     setShowTagPicker(false);
@@ -46,6 +53,7 @@ export function PostDetail({ post, onBack }: PostDetailProps) {
   };
 
   const handleRemoveTag = async (tag: string) => {
+    if (!post) return;
     const newTags = tags.filter((t) => t !== tag);
     setTags(newTags);
     try {
@@ -58,89 +66,90 @@ export function PostDetail({ post, onBack }: PostDetailProps) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <Button variant="ghost" onClick={onBack} className="mb-4 -ml-2 text-muted-foreground">
-        <ArrowLeft className="h-4 w-4 mr-1" /> Back
-      </Button>
+    <Dialog open={!!post} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
+        {post && (
+          <>
+            <DialogHeader>
+              <DialogTitle className="text-lg leading-snug pr-6">{post.title}</DialogTitle>
+              <DialogDescription className="flex items-center gap-4 text-sm pt-1">
+                <span className="flex items-center gap-1.5">
+                  <User className="h-3.5 w-3.5" />
+                  {post.author}
+                </span>
+                {post.date && (
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5" />
+                    {new Date(post.date).toLocaleDateString("en-US", {
+                      year: "numeric", month: "long", day: "numeric",
+                    })}
+                  </span>
+                )}
+              </DialogDescription>
+            </DialogHeader>
 
-      <div className="bg-card rounded-lg border border-border p-6 shadow-sm">
-        <h1 className="text-xl font-bold text-foreground mb-3">{post.title}</h1>
+            <div className="text-sm text-foreground/85 whitespace-pre-line leading-relaxed py-2">
+              {post.body}
+            </div>
 
-        <div className="flex items-center gap-4 text-sm text-muted-foreground mb-5 pb-5 border-b border-border">
-          <span className="flex items-center gap-1.5">
-            <User className="h-4 w-4" />
-            <span className="font-medium text-foreground">{post.author}</span>
-          </span>
-          {post.date && (
-            <span className="flex items-center gap-1.5">
-              <Calendar className="h-4 w-4" />
-              {new Date(post.date).toLocaleDateString("en-US", {
-                year: "numeric", month: "long", day: "numeric",
-              })}
-            </span>
-          )}
-        </div>
-
-        <div className="text-sm text-foreground/85 whitespace-pre-line leading-relaxed mb-6">
-          {post.body}
-        </div>
-
-        <div className="mb-5">
-          <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Tags</h4>
-          <div className="flex flex-wrap gap-1.5 items-center">
-            {tags.map((tag) => (
-              <Badge
-                key={tag}
-                variant="outline"
-                className={`text-xs font-medium pr-1 ${TAG_COLORS[tag] || TAG_COLORS.Other}`}
-              >
-                {tag}
-                <button
-                  onClick={() => handleRemoveTag(tag)}
-                  className="ml-1 hover:bg-black/10 rounded-full p-0.5"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
-            {availableTags.length > 0 && (
-              <div className="relative">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-6 px-2 text-xs"
-                  onClick={() => setShowTagPicker(!showTagPicker)}
-                >
-                  <Plus className="h-3 w-3" />
-                </Button>
-                {showTagPicker && (
-                  <div className="absolute top-8 left-0 z-10 bg-popover border border-border rounded-md shadow-md p-1 min-w-[120px]">
-                    {availableTags.map((tag) => (
-                      <button
-                        key={tag}
-                        className="block w-full text-left px-3 py-1.5 text-sm hover:bg-accent rounded-sm"
-                        onClick={() => handleAddTag(tag)}
-                      >
-                        {tag}
-                      </button>
-                    ))}
+            <div className="mb-2">
+              <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Tags</h4>
+              <div className="flex flex-wrap gap-1.5 items-center">
+                {tags.map((tag) => (
+                  <Badge
+                    key={tag}
+                    variant="outline"
+                    className={`text-xs font-medium pr-1 ${TAG_COLORS[tag] || TAG_COLORS.Other}`}
+                  >
+                    {tag}
+                    <button
+                      onClick={() => handleRemoveTag(tag)}
+                      className="ml-1 hover:bg-black/10 rounded-full p-0.5"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                ))}
+                {availableTags.length > 0 && (
+                  <div className="relative">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-6 px-2 text-xs"
+                      onClick={() => setShowTagPicker(!showTagPicker)}
+                    >
+                      <Plus className="h-3 w-3" />
+                    </Button>
+                    {showTagPicker && (
+                      <div className="absolute bottom-8 left-0 z-10 bg-popover border border-border rounded-md shadow-md p-1 min-w-[120px]">
+                        {availableTags.map((tag) => (
+                          <button
+                            key={tag}
+                            className="block w-full text-left px-3 py-1.5 text-sm hover:bg-accent rounded-sm"
+                            onClick={() => handleAddTag(tag)}
+                          >
+                            {tag}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {post.linkedinUrl && (
-          <Button
-            className="w-full"
-            onClick={() => window.open(post.linkedinUrl!, "_blank")}
-          >
-            <ExternalLink className="h-4 w-4 mr-2" />
-            View on LinkedIn
-          </Button>
+            {post.linkedinUrl && (
+              <Button
+                className="w-full"
+                onClick={() => window.open(post.linkedinUrl!, "_blank")}
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                View on LinkedIn
+              </Button>
+            )}
+          </>
         )}
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

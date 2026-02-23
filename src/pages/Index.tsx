@@ -96,22 +96,6 @@ const Index = () => {
     URL.revokeObjectURL(url);
   };
 
-  if (selectedPost) {
-    return (
-      <div className="min-h-screen bg-background">
-        <header className="sticky top-0 z-10 bg-card border-b border-border">
-          <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2">
-            <Bookmark className="h-5 w-5 text-primary" />
-            <span className="font-semibold text-foreground">Saved Posts</span>
-          </div>
-        </header>
-        <main className="max-w-3xl mx-auto px-4 py-6">
-          <PostDetail post={selectedPost} onBack={() => setSelectedPost(null)} />
-        </main>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 bg-card border-b border-border shadow-sm">
@@ -253,6 +237,7 @@ const Index = () => {
         </a>{" "}
         for fun
       </footer>
+      <PostDetail post={selectedPost} onClose={() => setSelectedPost(null)} />
     </div>
   );
 };
