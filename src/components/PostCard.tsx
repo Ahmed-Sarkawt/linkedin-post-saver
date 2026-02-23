@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ExternalLink, ChevronDown, ChevronUp, Calendar, User, Tag } from "lucide-react";
+import { ExternalLink, ChevronDown, ChevronUp, User } from "lucide-react";
 import type { LinkedInPost } from "@/types/post";
 
 interface PostCardProps {
@@ -34,54 +33,51 @@ export function PostCard({ post, onSelect }: PostCardProps) {
     >
       <CardContent className="p-5">
         {/* Row 1: Title | Date */}
-        <div className="flex items-start justify-between gap-4 mb-4">
+        <div className="flex items-baseline justify-between gap-4">
           <h3 className="text-base font-semibold text-foreground leading-snug">
             {post.title}
           </h3>
           {post.date && (
-            <span className="flex items-center gap-1.5 text-xs text-muted-foreground whitespace-nowrap shrink-0">
-              <Calendar className="h-3.5 w-3.5" />
+            <span className="text-[11px] text-muted-foreground/70 whitespace-nowrap shrink-0">
               {new Date(post.date).toLocaleDateString()}
             </span>
           )}
         </div>
 
-        {/* Row 2: Author */}
-        <p className="text-sm text-muted-foreground mb-4 flex items-center gap-1.5">
-          <User className="h-3.5 w-3.5 shrink-0" />
-          {post.author}
-        </p>
+        {/* Content block: Author + Body (tight grouping) */}
+        <div className="mt-3 space-y-1.5">
+          <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+            <User className="h-3 w-3 shrink-0" />
+            {post.author}
+          </p>
+          <p className="text-sm text-foreground/80 whitespace-pre-line leading-relaxed">
+            {displayBody}
+          </p>
+          {shouldTruncate && (
+            <button
+              className="text-xs font-medium text-primary hover:underline flex items-center gap-1"
+              onClick={(e) => {
+                e.stopPropagation();
+                setExpanded(!expanded);
+              }}
+            >
+              {expanded ? (
+                <>Show less <ChevronUp className="h-3 w-3" /></>
+              ) : (
+                <>Show more <ChevronDown className="h-3 w-3" /></>
+              )}
+            </button>
+          )}
+        </div>
 
-        {/* Row 3: Body */}
-        <p className="text-sm text-foreground/80 whitespace-pre-line leading-relaxed mb-4">
-          {displayBody}
-        </p>
-
-        {shouldTruncate && (
-          <button
-            className="text-sm font-medium text-primary hover:underline mb-4 flex items-center gap-1"
-            onClick={(e) => {
-              e.stopPropagation();
-              setExpanded(!expanded);
-            }}
-          >
-            {expanded ? (
-              <>Show less <ChevronUp className="h-3.5 w-3.5" /></>
-            ) : (
-              <>Show more <ChevronDown className="h-3.5 w-3.5" /></>
-            )}
-          </button>
-        )}
-
-        {/* Row 4: Tags | URL */}
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex flex-wrap gap-1.5 items-center">
-            <Tag className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+        {/* Row 3: Tags | Link (metadata row) */}
+        <div className="flex items-center justify-between gap-3 mt-4 pt-3 border-t border-border/50">
+          <div className="flex flex-wrap gap-1 items-center">
             {post.tags.map((tag) => (
               <Badge
                 key={tag}
                 variant="outline"
-                className={`text-xs font-medium ${TAG_COLORS[tag] || TAG_COLORS.Other}`}
+                className={`text-[10px] font-medium px-1.5 py-0 ${TAG_COLORS[tag] || TAG_COLORS.Other}`}
               >
                 {tag}
               </Badge>
@@ -89,20 +85,16 @@ export function PostCard({ post, onSelect }: PostCardProps) {
           </div>
 
           {post.linkedinUrl && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-primary h-7 px-2 gap-1.5 min-w-0 shrink-0"
+            <button
+              className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary transition-colors shrink-0"
               onClick={(e) => {
                 e.stopPropagation();
                 window.open(post.linkedinUrl!, "_blank");
               }}
             >
-              <ExternalLink className="h-3.5 w-3.5 shrink-0" />
-              <span className="text-xs truncate max-w-[160px]">
-                {post.linkedinUrl.replace(/^https?:\/\/(www\.)?/, '')}
-              </span>
-            </Button>
+              <ExternalLink className="h-3 w-3" />
+              View on LinkedIn
+            </button>
           )}
         </div>
       </CardContent>
