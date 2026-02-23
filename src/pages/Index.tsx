@@ -122,7 +122,7 @@ const Index = () => {
             </Button>
             <Button variant="ghost" size="sm" onClick={handleReset} title="Reset Notion connection">
               <Settings className="h-4 w-4" />
-              <span className="hidden sm:inline ml-1 text-xs">Settings</span>
+              <span className="hidden sm:inline ml-1 text-xs">Reset</span>
             </Button>
           </div>
         </div>
