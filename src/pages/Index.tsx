@@ -19,6 +19,7 @@ const Index = () => {
   const [selectedPost, setSelectedPost] = useState<LinkedInPost | null>(null);
   const [selectedAuthor, setSelectedAuthor] = useState<string>("");
   const [dateRange, setDateRange] = useState<string>("");
+  const [visibleCount, setVisibleCount] = useState(10);
 
   const authors = useMemo(() => {
     if (!posts) return [];
@@ -218,10 +219,17 @@ const Index = () => {
         )}
 
         <div className="flex flex-col gap-3">
-          {filteredPosts.map((post) => (
+          {filteredPosts.slice(0, visibleCount).map((post) => (
             <PostCard key={post.id} post={post} onSelect={setSelectedPost} />
           ))}
         </div>
+        {visibleCount < filteredPosts.length && (
+          <div className="flex justify-center mt-6">
+            <Button variant="outline" size="sm" onClick={() => setVisibleCount((c) => c + 10)}>
+              Load more ({filteredPosts.length - visibleCount} remaining)
+            </Button>
+          </div>
+        )}
       </main>
 
       <footer className="max-w-3xl mx-auto px-4 py-6 text-center text-xs text-muted-foreground">
