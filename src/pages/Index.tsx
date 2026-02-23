@@ -2,19 +2,32 @@ import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Search, Download, Loader2, Bookmark } from "lucide-react";
+import { Search, Download, Loader2, Bookmark, CalendarIcon, User, X } from "lucide-react";
 import { usePosts } from "@/hooks/use-posts";
 import { PostCard } from "@/components/PostCard";
 import { SetupGuide } from "@/components/SetupGuide";
 import { HelpDialog } from "@/components/HelpDialog";
 import { PostDetail } from "@/components/PostDetail";
 import { ALL_TAGS, type LinkedInPost } from "@/types/post";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const Index = () => {
   const { data: posts, isLoading, error } = usePosts();
   const [search, setSearch] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedPost, setSelectedPost] = useState<LinkedInPost | null>(null);
+  const [selectedAuthor, setSelectedAuthor] = useState<string>("");
+  const [dateFrom, setDateFrom] = useState<Date | undefined>();
+  const [dateTo, setDateTo] = useState<Date | undefined>();
+
+  const authors = useMemo(() => {
+    if (!posts) return [];
+    return [...new Set(posts.map((p) => p.author))].sort();
+  }, [posts]);
 
   const filteredPosts = useMemo(() => {
     if (!posts) return [];
@@ -27,9 +40,13 @@ const Index = () => {
         post.tags.some((t) => t.toLowerCase().includes(q));
       const matchesTags = selectedTags.length === 0 ||
         selectedTags.some((t) => post.tags.includes(t));
-      return matchesSearch && matchesTags;
+      const matchesAuthor = !selectedAuthor || post.author === selectedAuthor;
+      const postDate = post.date ? new Date(post.date) : null;
+      const matchesDateFrom = !dateFrom || (postDate && postDate >= dateFrom);
+      const matchesDateTo = !dateTo || (postDate && postDate <= dateTo);
+      return matchesSearch && matchesTags && matchesAuthor && matchesDateFrom && matchesDateTo;
     });
-  }, [posts, search, selectedTags]);
+  }, [posts, search, selectedTags, selectedAuthor, dateFrom, dateTo]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -118,6 +135,55 @@ const Index = () => {
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10"
           />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          {/* Author filter */}
+          <Select value={selectedAuthor} onValueChange={(v) => setSelectedAuthor(v === "__all__" ? "" : v)}>
+            <SelectTrigger className="w-[160px] h-8 text-xs">
+              <User className="h-3 w-3 mr-1.5 shrink-0" />
+              <SelectValue placeholder="All authors" />
+            </SelectTrigger>
+            <SelectContent className="bg-popover z-50">
+              <SelectItem value="__all__" className="text-xs">All authors</SelectItem>
+              {authors.map((author) => (
+                <SelectItem key={author} value={author} className="text-xs">{author}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Date from */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm" className={cn("h-8 text-xs gap-1.5 font-normal", !dateFrom && "text-muted-foreground")}>
+                <CalendarIcon className="h-3 w-3" />
+                {dateFrom ? format(dateFrom, "MMM d, yyyy") : "From date"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-popover z-50" align="start">
+              <Calendar mode="single" selected={dateFrom} onSelect={setDateFrom} initialFocus className={cn("p-3 pointer-events-auto")} />
+            </PopoverContent>
+          </Popover>
+
+          {/* Date to */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm" className={cn("h-8 text-xs gap-1.5 font-normal", !dateTo && "text-muted-foreground")}>
+                <CalendarIcon className="h-3 w-3" />
+                {dateTo ? format(dateTo, "MMM d, yyyy") : "To date"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-popover z-50" align="start">
+              <Calendar mode="single" selected={dateTo} onSelect={setDateTo} initialFocus className={cn("p-3 pointer-events-auto")} />
+            </PopoverContent>
+          </Popover>
+
+          {/* Clear filters */}
+          {(selectedAuthor || dateFrom || dateTo) && (
+            <Button variant="ghost" size="sm" className="h-8 text-xs gap-1" onClick={() => { setSelectedAuthor(""); setDateFrom(undefined); setDateTo(undefined); }}>
+              <X className="h-3 w-3" /> Clear
+            </Button>
+          )}
         </div>
 
         <div className="flex flex-wrap gap-1.5 mb-5">
