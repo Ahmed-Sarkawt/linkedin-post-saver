@@ -7,6 +7,7 @@ import type { LinkedInPost } from "@/types/post";
 interface PostCardProps {
   post: LinkedInPost;
   onSelect: (post: LinkedInPost) => void;
+  variant?: "list" | "grid";
 }
 
 const TAG_COLORS: Record<string, string> = {
@@ -21,21 +22,23 @@ const TAG_COLORS: Record<string, string> = {
   Other: "bg-gray-100 text-gray-800 border-gray-200",
 };
 
-export function PostCard({ post, onSelect }: PostCardProps) {
+export function PostCard({ post, onSelect, variant = "list" }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
   const cleanBody = post.body.replace(/…more\s*$/i, '').replace(/\.\.\.more\s*$/i, '').trimEnd();
-  const shouldTruncate = cleanBody.length > 280;
-  const displayBody = expanded || !shouldTruncate ? cleanBody : cleanBody.slice(0, 280) + "…";
+  const isGrid = variant === "grid";
+  const truncateLen = isGrid ? 120 : 280;
+  const shouldTruncate = cleanBody.length > truncateLen;
+  const displayBody = expanded || !shouldTruncate ? cleanBody : cleanBody.slice(0, truncateLen) + "…";
 
   return (
     <Card
       className="cursor-pointer transition-shadow hover:shadow-md border-border"
       onClick={() => onSelect(post)}
     >
-      <CardContent className="p-5">
+      <CardContent className={isGrid ? "p-4" : "p-5"}>
         {/* Row 1: Title | Date */}
         <div className="flex items-baseline justify-between gap-4">
-          <h3 className="text-base font-semibold text-foreground leading-snug">
+          <h3 className={`font-semibold text-foreground leading-snug ${isGrid ? "text-sm line-clamp-2" : "text-base"}`}>
             {post.title}
           </h3>
           {post.date && (
@@ -51,7 +54,7 @@ export function PostCard({ post, onSelect }: PostCardProps) {
             <User className="h-3 w-3 shrink-0" />
             {post.author}
           </p>
-          <p className="text-sm text-foreground/80 whitespace-pre-line leading-relaxed">
+          <p className={`text-foreground/80 whitespace-pre-line leading-relaxed ${isGrid ? "text-xs" : "text-sm"}`}>
             {displayBody}
           </p>
           {shouldTruncate && (
