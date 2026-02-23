@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { ExternalLink, Calendar, User, X, Plus, Trash2 } from "lucide-react";
 import { useUpdatePostTags, useDeletePost } from "@/hooks/use-posts";
 import { useToast } from "@/hooks/use-toast";
@@ -151,23 +152,41 @@ export function PostDetail({ post, onClose }: PostDetailProps) {
                   View on LinkedIn
                 </Button>
               )}
-              <Button
-                variant="destructive"
-                className={post.linkedinUrl ? "" : "w-full"}
-                onClick={async () => {
-                  try {
-                    await deletePost.mutateAsync(post.id);
-                    toast({ title: "Post deleted" });
-                    onClose();
-                  } catch {
-                    toast({ title: "Error", description: "Failed to delete post", variant: "destructive" });
-                  }
-                }}
-                disabled={deletePost.isPending}
-              >
-                <Trash2 className="h-4 w-4 mr-2" />
-                {deletePost.isPending ? "Deleting…" : "Delete"}
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="destructive"
+                    className={post.linkedinUrl ? "" : "w-full"}
+                    disabled={deletePost.isPending}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    {deletePost.isPending ? "Deleting…" : "Delete"}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete this post?</AlertDialogTitle>
+                    <AlertDialogDescription>This will archive the post in Notion. This action cannot be easily undone.</AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      onClick={async () => {
+                        try {
+                          await deletePost.mutateAsync(post.id);
+                          toast({ title: "Post deleted" });
+                          onClose();
+                        } catch {
+                          toast({ title: "Error", description: "Failed to delete post", variant: "destructive" });
+                        }
+                      }}
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </>
         )}
