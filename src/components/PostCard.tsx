@@ -23,8 +23,9 @@ const TAG_COLORS: Record<string, string> = {
 
 export function PostCard({ post, onSelect }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
-  const shouldTruncate = post.body.length > 280;
-  const displayBody = expanded || !shouldTruncate ? post.body : post.body.slice(0, 280) + "…";
+  const cleanBody = post.body.replace(/…more\s*$/i, '').replace(/\.\.\.more\s*$/i, '').trimEnd();
+  const shouldTruncate = cleanBody.length > 280;
+  const displayBody = expanded || !shouldTruncate ? cleanBody : cleanBody.slice(0, 280) + "…";
 
   return (
     <Card
