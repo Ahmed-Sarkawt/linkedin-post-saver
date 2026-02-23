@@ -5,7 +5,7 @@ const steps = [
   {
     icon: Download,
     title: "Download the Extension",
-    description: "Download the LinkedIn Post Saver Chrome extension .zip file and unzip it on your computer.",
+    description: "Download the LinkedIn Post Saver Chrome extension from the onboarding page and unzip it.",
   },
   {
     icon: Chrome,
@@ -15,17 +15,17 @@ const steps = [
   {
     icon: Puzzle,
     title: "Load the Extension",
-    description: 'Click "Load unpacked" and select the unzipped extension folder. The extension icon will appear in your toolbar.',
+    description: 'Click "Load unpacked" and select the unzipped folder. The extension icon will appear in your toolbar.',
   },
   {
     icon: MousePointer,
     title: "Save Posts from LinkedIn",
-    description: "Browse your LinkedIn feed. Click the save button on any post to capture it — the title and tags are generated automatically by AI.",
+    description: "Browse your LinkedIn feed. Click the save button on any post — title and tags are generated automatically by AI.",
   },
   {
     icon: Zap,
     title: "View Here",
-    description: "Saved posts appear in this dashboard instantly. Search, filter by tags, and export anytime.",
+    description: "Saved posts appear in this dashboard. Search, filter by tags, and export anytime. Use the Settings button to update your Notion connection.",
   },
 ];
 
