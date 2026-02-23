@@ -1,1 +1,10 @@
 project_id = "nmerrrljdqnmjvmjkuod"
+
+[functions.save-linkedin-post]
+verify_jwt = false
+
+[functions.get-linkedin-posts]
+verify_jwt = false
+
+[functions.update-linkedin-post]
+verify_jwt = false
