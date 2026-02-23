@@ -164,7 +164,7 @@ const Index = () => {
       <footer className="max-w-3xl mx-auto px-4 py-6 text-center text-xs text-muted-foreground">
         Built by Ahmed Sulaiman with{" "}
         <a
-          href="https://lovable.dev?ref=ahmed-sulaiman"
+          href="https://lovable.dev/invite/EELXUXJ"
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary hover:underline"
