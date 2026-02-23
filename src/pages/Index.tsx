@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Search, Download, Loader2, Bookmark } from "lucide-react";
 import { usePosts } from "@/hooks/use-posts";
 import { PostCard } from "@/components/PostCard";
+import { SetupGuide } from "@/components/SetupGuide";
 import { PostDetail } from "@/components/PostDetail";
 import { ALL_TAGS, type LinkedInPost } from "@/types/post";
 
@@ -129,6 +130,8 @@ const Index = () => {
             </Badge>
           ))}
         </div>
+
+        {!isLoading && !error && (!posts || posts.length === 0) && <SetupGuide />}
 
         {isLoading && (
           <div className="flex items-center justify-center py-20">
