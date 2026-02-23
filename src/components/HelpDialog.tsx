@@ -13,7 +13,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { HelpCircle, Download, Database, Copy } from "lucide-react";
+import { HelpCircle, Download, Database, Key } from "lucide-react";
 
 const EXTENSION_DOWNLOAD_URL = `https://nmerrrljdqnmjvmjkuod.supabase.co/functions/v1/download-extension`;
 
@@ -47,13 +47,17 @@ const sections = [
   {
     id: "notion",
     icon: Database,
-    title: "Connect to Notion",
+    title: "Set Up Your Notion Database",
     content: (
       <div className="space-y-3">
         <ol className="list-decimal list-inside space-y-1.5 pl-1">
+          <li className="text-xs text-muted-foreground leading-relaxed">
+            <a href="https://thewhitespacestudio.notion.site/Data-Template-310392a25611802aa1b5caf192432296?source=copy_link" target="_blank" rel="noopener noreferrer" className="text-primary underline">Duplicate this Notion template</a> to your workspace.
+          </li>
           <li className="text-xs text-muted-foreground leading-relaxed">Go to <a href="https://www.notion.so/my-integrations" target="_blank" rel="noopener noreferrer" className="text-primary underline">notion.so/my-integrations</a> and create a new integration.</li>
-          <li className="text-xs text-muted-foreground leading-relaxed">Copy the Internal Integration Secret (API key).</li>
-          <li className="text-xs text-muted-foreground leading-relaxed">Create a Notion database with these columns:</li>
+          <li className="text-xs text-muted-foreground leading-relaxed">Copy the Internal Integration Secret (your API key).</li>
+          <li className="text-xs text-muted-foreground leading-relaxed">Share the database with your integration (click ⋯ → Connections → Connect).</li>
+          <li className="text-xs text-muted-foreground leading-relaxed">Copy the Database ID from the URL (the 32-character string after the workspace name).</li>
         </ol>
         <div className="border border-border rounded-md overflow-hidden ml-5">
           <table className="w-full text-xs">
@@ -73,24 +77,19 @@ const sections = [
             </tbody>
           </table>
         </div>
-        <ol className="list-decimal list-inside space-y-1.5 pl-1" start={4}>
-          <li className="text-xs text-muted-foreground leading-relaxed">Share the database with your integration (click ⋯ → Connections → Connect).</li>
-          <li className="text-xs text-muted-foreground leading-relaxed">Copy the Database ID from the URL (the 32-character string after the workspace name).</li>
-          <li className="text-xs text-muted-foreground leading-relaxed">Add both the API key and Database ID as secrets in your Lovable project settings.</li>
-        </ol>
       </div>
     ),
   },
   {
-    id: "fork",
-    icon: Copy,
-    title: "Fork the GitHub Repository",
+    id: "connect",
+    icon: Key,
+    title: "Enter Your Notion Credentials",
     content: (
       <ol className="list-decimal list-inside space-y-1.5 pl-1">
-        <li className="text-xs text-muted-foreground leading-relaxed">Fork or clone the repo from <a href="https://github.com/Ahmed-Sarkawt/linkedin-post-saver" target="_blank" rel="noopener noreferrer" className="text-primary underline">GitHub</a>.</li>
-        <li className="text-xs text-muted-foreground leading-relaxed">Import your forked repo into <a href="https://lovable.dev" target="_blank" rel="noopener noreferrer" className="text-primary underline">Lovable</a> to get a project with a backend ready to go.</li>
-        <li className="text-xs text-muted-foreground leading-relaxed">In your new project, go to Settings → Secrets and add your NOTION_API_KEY and NOTION_DATABASE_ID.</li>
-        <li className="text-xs text-muted-foreground leading-relaxed">Your project is now fully connected and ready to use!</li>
+        <li className="text-xs text-muted-foreground leading-relaxed">Click the <strong>Settings</strong> (gear icon) button in the dashboard header to reset your connection.</li>
+        <li className="text-xs text-muted-foreground leading-relaxed">You'll be taken back to the onboarding page where you can enter your <strong>Notion API Key</strong> and <strong>Database ID</strong>.</li>
+        <li className="text-xs text-muted-foreground leading-relaxed">Your credentials are stored locally in your browser — they're never saved on any server.</li>
+        <li className="text-xs text-muted-foreground leading-relaxed">Click <strong>Connect & go to my dashboard</strong> and you're all set!</li>
       </ol>
     ),
   },
