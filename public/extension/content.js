@@ -141,7 +141,7 @@
 
   function shouldRunOnPage() {
     const path = window.location.pathname;
-    return path.startsWith("/feed") || path.startsWith("/in/") || path.startsWith("/posts/");
+    return path.startsWith("/feed") || path.startsWith("/in/") || path.startsWith("/posts/") || path.startsWith("/company/");
   }
 
   function injectButtons() {

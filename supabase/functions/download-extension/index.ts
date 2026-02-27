@@ -21,7 +21,7 @@ serve(async (req) => {
       permissions: [],
       host_permissions: ["https://www.linkedin.com/*"],
       content_scripts: [{
-        matches: ["https://www.linkedin.com/feed*", "https://www.linkedin.com/in/*", "https://www.linkedin.com/posts/*"],
+        matches: ["https://www.linkedin.com/feed*", "https://www.linkedin.com/in/*", "https://www.linkedin.com/posts/*", "https://www.linkedin.com/company/*"],
         js: ["content.js"],
         css: ["content.css"],
       }],
@@ -133,7 +133,7 @@ function generateContentJs(edgeFunctionUrl: string, anonKey: string): string {
 
   function shouldRunOnPage() {
     var p = window.location.pathname;
-    return p.startsWith("/feed") || p.startsWith("/in/") || p.startsWith("/posts/");
+    return p.startsWith("/feed") || p.startsWith("/in/") || p.startsWith("/posts/") || p.startsWith("/company/");
   }
 
   function injectButtons() {
