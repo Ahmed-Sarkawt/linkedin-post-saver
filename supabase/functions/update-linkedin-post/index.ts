@@ -26,7 +26,7 @@ serve(async (req) => {
       headers: {
         Authorization: `Bearer ${NOTION_API_KEY}`,
         "Content-Type": "application/json",
-        "Notion-Version": "2025-09-03",
+        "Notion-Version": "2022-06-28",
       },
       body: JSON.stringify({ properties }),
     });
