@@ -27,12 +27,17 @@ serve(async (req) => {
       };
       if (startCursor) queryBody.start_cursor = startCursor;
 
-      const response = await fetch(`https://api.notion.com/v1/databases/${NOTION_DATABASE_ID}/query`, {
+      // Clean the database ID - remove hyphens if present
+      const cleanDbId = NOTION_DATABASE_ID.replace(/-/g, '');
+      const dbUrl = `https://api.notion.com/v1/databases/${cleanDbId}/query`;
+      console.log("Querying Notion database:", dbUrl);
+
+      const response = await fetch(dbUrl, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${NOTION_API_KEY}`,
           "Content-Type": "application/json",
-          "Notion-Version": "2025-09-03",
+          "Notion-Version": "2022-06-28",
         },
         body: JSON.stringify(queryBody),
       });
@@ -40,7 +45,15 @@ serve(async (req) => {
       if (!response.ok) {
         const errText = await response.text();
         console.error("Notion error:", response.status, errText);
-        throw new Error(`Notion API error: ${response.status}`);
+        
+        // If we get the multi-data-source error, provide a helpful message
+        if (errText.includes("multiple_data_sources")) {
+          const parsed = JSON.parse(errText);
+          const childIds = parsed.additional_data?.child_data_source_ids || [];
+          throw new Error(`This database has multiple data sources. Please use one of the child database IDs instead: ${childIds.join(', ')}`);
+        }
+        
+        throw new Error(`Notion API error: ${response.status} - ${errText}`);
       }
 
       const data = await response.json();
