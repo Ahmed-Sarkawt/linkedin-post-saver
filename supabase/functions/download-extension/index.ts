@@ -59,8 +59,7 @@ function generateContentJs(edgeFunctionUrl: string, anonKey: string): string {
   const EDGE_FUNCTION_URL = "${edgeFunctionUrl}";
   const ANON_KEY = "${anonKey}";
 
-  const BOOKMARK_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1z"/></svg>';
-  const CHECK_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+  const BOOKMARK_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 2h14a1 1 0 011 1v19.143a.5.5 0 01-.766.424L12 18.03l-7.234 4.536A.5.5 0 014 22.143V3a1 1 0 011-1z"/></svg>';
 
   const processedPosts = new WeakSet();
 
@@ -132,7 +131,13 @@ function generateContentJs(edgeFunctionUrl: string, anonKey: string): string {
     return btn;
   }
 
+  function shouldRunOnPage() {
+    var p = window.location.pathname;
+    return p.startsWith("/feed") || p.startsWith("/in/") || p.startsWith("/posts/");
+  }
+
   function injectButtons() {
+    if (!shouldRunOnPage()) return;
     document.querySelectorAll(".feed-shared-update-v2, .occludable-update").forEach((postEl) => {
       if (processedPosts.has(postEl)) return;
       processedPosts.add(postEl);
