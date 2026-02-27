@@ -88,7 +88,7 @@ Respond using the generate_metadata function.`
       headers: {
         Authorization: `Bearer ${NOTION_API_KEY}`,
         "Content-Type": "application/json",
-        "Notion-Version": "2022-06-28",
+        "Notion-Version": "2025-09-03",
       },
       body: JSON.stringify({
         parent: { database_id: NOTION_DATABASE_ID },
